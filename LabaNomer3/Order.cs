@@ -14,7 +14,6 @@ namespace LabaNomer3
         public Restaurant Restaurant { get; set; }
         public Courier Courier { get; set; }
         public Client Client { get; set; }
-
         public Order(List<Dish> dishes, Restaurant restaurant, Client client)
         {
             Dishes = dishes;
@@ -33,7 +32,6 @@ namespace LabaNomer3
             }
             return total;
         }
-
         public void UpdateStatus(string status)
         {
             Status = status;
