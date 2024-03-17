@@ -33,6 +33,7 @@ namespace LabaNomer3
         public string Address { get; set; }
         public string City { get; set; }
         public int Rating { get; set; }
+        public List<Dish> Menu { get; set; }
 
         private static List<string> addresses = new List<string>
         {
@@ -75,6 +76,7 @@ namespace LabaNomer3
             City = city;
             Rating = GenerateRandomRating();
             Address = GenerateRandomAddress();
+            Menu = Dish.Dishes.Where(dish => dish.Type == type).ToList();
         }
 
         public static int GenerateRandomRating()
@@ -91,7 +93,14 @@ namespace LabaNomer3
             int houseNumber = random.Next(1, 151);
             return address + ", " + houseNumber.ToString();
         }
-
+        public void DisplayMenu()
+        {
+            Console.WriteLine("Меню:");
+            foreach (var dish in Menu)
+            {
+                Console.WriteLine($"Назва: {dish.Name}, Опис: {dish.Description}, Ціна: {dish.Price}, Калорії: {dish.Calories}");
+            }
+        }
         public void DisplayInfo()
         {
             Console.WriteLine($"Назва: {Name}, Тип: {Type}, Місто: {City}, Адреса: {Address}, Рейтинг: {Rating}");
