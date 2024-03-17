@@ -6,7 +6,18 @@ using System.Threading.Tasks;
 
 namespace LabaNomer3
 {
-    internal class MockTester
+    public class MockTester
     {
+        public List<Client> Clients { get; set; }
+        public DeliveryManager DeliveryManager { get; set; }
+        public MockTester(List<Client> clients, DeliveryManager deliveryManager)
+        {
+            Clients = clients;
+            DeliveryManager = deliveryManager;
+        }
+        public void TestDeliveryService()
+        {
+
+        }
     }
 }
