@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Тут має бути код :)");
+            Console.WriteLine("Тут має бути код :) ");
         }
     }
 }
