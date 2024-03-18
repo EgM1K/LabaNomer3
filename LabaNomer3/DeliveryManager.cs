@@ -26,7 +26,7 @@ public class DeliveryManager
         for (int i = 0; i < courierCount; i++)
         {
             string courierName = Courier.courierNames[rand.Next(Courier.courierNames.Count)];
-            (string type, int speed) courierTransport = Courier.transportTypes[rand.Next(Courier.transportTypes.Count)];
+            (string type, int speed, double costPerKm) courierTransport = Courier.transportTypes[rand.Next(Courier.transportTypes.Count)];
             double courierRating = rand.NextDouble() * 5;
             string operatorCode = Courier.operatorCodes[rand.Next(Courier.operatorCodes.Count)];
             string phoneNumber = "+38" + operatorCode + rand.Next(1000000, 9999999).ToString();
@@ -80,11 +80,11 @@ public class DeliveryManager
         double deliveryCost = CalculateDeliveryCost(distance, 6);
 
         Console.WriteLine($"Кур'єр {courier.Name} доставив ваше замовлення на адресу {client.DeliveryAddress} за {deliveryTime * 60} хвилин на дистанцію {distance} кілометрів.");
-        Console.WriteLine($"З вас {order.TotalAmount + deliveryCost} грн (включаючи вартість доставки за кілометр - 6 грн).");
+        Console.WriteLine($"З вас {order.TotalAmount + deliveryCost} грн (включаючи вартість доставки за кілометр - {courier.Transport.costPerKm} грн).");
         Console.Write("Введіть номер картки для оплати: ");
         string cardNumber = Console.ReadLine();
 
-        if (rand.NextDouble() <= 0.1)
+        if (rand.NextDouble() <= 0.2)
         {
             Console.WriteLine("Оплата не пройшла. Пішов нахуй ніщєброд єбаний, я твою маму єбав - Менеджер Служби доставки.");
         }

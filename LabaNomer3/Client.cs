@@ -13,11 +13,17 @@ namespace LabaNomer3
         public string ContactNumber { get; set; }
         public List<Order> OrderHistory { get; set; }
 
-        public Client(string name, string deliveryAddress, string contactNumber)
+        public Client()
         {
-            Name = name;
-            DeliveryAddress = deliveryAddress;
-            ContactNumber = contactNumber;
+            Console.Write("Будь ласка, введіть ваше ім'я: ");
+            Name = Console.ReadLine();
+
+            Console.Write("Будь ласка, введіть вашу адресу доставки: ");
+            DeliveryAddress = Console.ReadLine();
+
+            Console.Write("Будь ласка, введіть ваш контактний номер: +380");
+            ContactNumber = "+380" + Console.ReadLine();
+
             OrderHistory = new List<Order>();
         }
     }
