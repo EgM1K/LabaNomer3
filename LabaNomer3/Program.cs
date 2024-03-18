@@ -4,7 +4,8 @@ internal class Program
     static void Main(string[] args)
     {
         Console.OutputEncoding = System.Text.Encoding.UTF8;
-        Console.WriteLine("Вітаємо це служба доставки сперми в рот вашої мами");
+        Console.InputEncoding = System.Text.Encoding.UTF8;
+        Console.WriteLine("Вітаємо це служба доставки 'Смачна Подорож'");
         var client = new Client();
         var chosenRestaurant = Restaurant.ChooseRestaurant();
         chosenRestaurant.DisplayInfo();
@@ -25,7 +26,7 @@ internal class Program
         Console.Clear();
 
         deliveryManager.EndInfo(client, order, courier);
-
+        client.LeaveReview();
         Console.WriteLine("Натисніть будь-яку клавішу для виходу...");
         Console.ReadKey();
     }

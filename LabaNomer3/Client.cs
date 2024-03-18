@@ -26,5 +26,16 @@ namespace LabaNomer3
 
             OrderHistory = new List<Order>();
         }
+        public void LeaveReview()
+        {
+            Console.Write("Будь ласка, введіть ваш відгук: ");
+            string reviewText = Console.ReadLine();
+            Console.Write("Будь ласка, введіть вашу оцінку: ");
+            int rating = Convert.ToInt32(Console.ReadLine());
+
+            Review review = new Review(this.Name, reviewText, rating, ContactNumber);
+            review.SaveReview();
+        }
     }
 }
+
