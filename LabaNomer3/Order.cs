@@ -46,8 +46,33 @@ namespace LabaNomer3
             }
             return total;
         }
+        public static Order CreateOrder(Client client, Restaurant chosenRestaurant)
+        {
+            Order order = new Order(new List<Dish>(), chosenRestaurant, client);
 
-        public void UpdateStatus(string status)
+            while (true)
+            {
+                var chosenDish = chosenRestaurant.ChooseDish();
+                order.AddDish(chosenDish);
+
+                Console.WriteLine("Вибрати ще одну страву? (1 - так, 2 - ні)");
+                string answer = Console.ReadLine();
+
+                switch (answer)
+                {
+                    case "1":
+                        break;
+                    case "2":
+                        order.DisplayOrderDetails();
+                        return order;
+                    default:
+                        Console.WriteLine("Невідома опція. Будь ласка, спробуйте ще раз.");
+                        break;
+                }
+            }
+        }
+
+            public void UpdateStatus(string status)
         {
             Status = status;
         }

@@ -110,7 +110,7 @@ namespace LabaNomer3
         {
             while (true)
             {
-                Console.WriteLine("Введіть місто:");
+                Console.Write("Введіть місто: ");
                 string city = Console.ReadLine();
 
                 Console.WriteLine("Виберіть ресторан: \n(1) McDonalds \n(2) KFC \n(3) BurgerKing \n(4) Subway \n(5) Starbucks \n(6) PizzaHut \n(7) Dominos \n(8) Dunkin \n(9) BaskinRobbins \n(10) Custom"); ;
@@ -164,11 +164,18 @@ namespace LabaNomer3
                 Restaurant chosenRestaurant = new Restaurant(chosenName, chosenType, city);
                 chosenRestaurant.DisplayInfo();
 
-                Console.WriteLine("Вас все задовольняє? (так/ні)");
-                string satisfactionResponse = Console.ReadLine().ToLower();
-                if (satisfactionResponse == "так")
+                Console.WriteLine("Вас все задовольняє? (1) так (2) ні");
+                int satisfactionResponse = Int32.Parse(Console.ReadLine());
+                switch (satisfactionResponse)
                 {
-                    return chosenRestaurant;
+                    case 1:
+                        return chosenRestaurant;
+                    case 2:
+                        Console.WriteLine("Давайте спробуємо знову.");
+                        break;
+                    default:
+                        Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
+                        break;
                 }
             }
         }
