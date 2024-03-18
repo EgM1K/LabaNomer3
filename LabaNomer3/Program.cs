@@ -1,5 +1,4 @@
 ﻿using LabaNomer3;
-
 internal class Program
 {
     static void Main(string[] args)
@@ -30,9 +29,14 @@ internal class Program
         Console.ReadKey();
         Console.Clear();
         var deliveryManager = new DeliveryManager();
-        var courier = deliveryManager.SelectCourier();
+        var courier = deliveryManager.SelectCourier(client, order);
         courier.ShowCourierDetails();
 
+        Console.WriteLine("Натисніть будь-яку клавішу для продовження...");
+        Console.ReadKey();
+        Console.Clear();
+
+        deliveryManager.EndInfo(client, order, courier);
 
         Console.WriteLine("Натисніть будь-яку клавішу для виходу...");
         Console.ReadKey();
