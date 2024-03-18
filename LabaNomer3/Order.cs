@@ -14,6 +14,7 @@ namespace LabaNomer3
         public Restaurant Restaurant { get; set; }
         public Courier Courier { get; set; }
         public Client Client { get; set; }
+
         public Order(List<Dish> dishes, Restaurant restaurant, Client client)
         {
             Dishes = dishes;
@@ -21,6 +22,19 @@ namespace LabaNomer3
             Status = "Виконано";
             Restaurant = restaurant;
             Client = client;
+        }
+
+        public void AddDish(Dish dish)
+        {
+            Dishes.Add(dish);
+            TotalAmount += dish.Price;
+        }
+
+        public void DisplayTotalCaloriesAndPrice()
+        {
+            int totalCalories = Dishes.Sum(dish => dish.Calories);
+            Console.WriteLine($"Загальна калорійність: {totalCalories}");
+            Console.WriteLine($"Загальна ціна: {TotalAmount}");
         }
 
         private double CalculateTotalAmount()
@@ -32,9 +46,19 @@ namespace LabaNomer3
             }
             return total;
         }
+
         public void UpdateStatus(string status)
         {
             Status = status;
+        }
+        public void DisplayOrderDetails()
+        {
+            Console.WriteLine($"Замовник: {Client.Name}");
+            Console.WriteLine($"Адреса доставки: {Client.DeliveryAddress}");
+            Console.WriteLine($"Контактний номер: {Client.ContactNumber}");
+            Console.WriteLine($"Ресторан: {Restaurant.Name}");
+            Console.WriteLine($"Статус замовлення: {Status}");
+            DisplayTotalCaloriesAndPrice();
         }
     }
 }

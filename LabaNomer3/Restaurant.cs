@@ -161,6 +161,24 @@ namespace LabaNomer3
 
             return new Restaurant(chosenName, chosenType, city);
         }
+        public Dish ChooseDish()
+        {
+            Console.WriteLine("Виберіть страву:");
+            for (int i = 0; i < Menu.Count; i++)
+            {
+                Console.WriteLine($"{i + 1}. {Menu[i].Name}");
+            }
+
+            int chosenNumber = Int32.Parse(Console.ReadLine());
+
+            if (chosenNumber < 1 || chosenNumber > Menu.Count)
+            {
+                Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
+                return ChooseDish();
+            }
+
+            return Menu[chosenNumber - 1];
+        }
 
     }
 }
