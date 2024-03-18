@@ -108,59 +108,71 @@ namespace LabaNomer3
 
         public static Restaurant ChooseRestaurant()
         {
-            Console.WriteLine("Введіть місто:");
-            string city = Console.ReadLine();
-
-            Console.WriteLine("Виберіть ресторан: \n(1) McDonalds \n(2) KFC \n(3) BurgerKing \n(4) Subway \n(5) Starbucks \n(6) PizzaHut \n(7) Dominos \n(8) Dunkin \n(9) BaskinRobbins \n(10) Custom"); ;
-            int chosenNumber = Int32.Parse(Console.ReadLine());
-
-            if (chosenNumber < 1 || chosenNumber > 10)
+            while (true)
             {
-                Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
-                return ChooseRestaurant();
-            }
-            RestaurantName chosenName;
-            RestaurantType chosenType;
+                Console.WriteLine("Введіть місто:");
+                string city = Console.ReadLine();
 
-            if (chosenNumber == 10)
-            {
-                Console.WriteLine("Введіть назву ресторану:");
-                string customName = Console.ReadLine();
-                chosenName = RestaurantName.Custom;
+                Console.WriteLine("Виберіть ресторан: \n(1) McDonalds \n(2) KFC \n(3) BurgerKing \n(4) Subway \n(5) Starbucks \n(6) PizzaHut \n(7) Dominos \n(8) Dunkin \n(9) BaskinRobbins \n(10) Custom"); ;
+                int chosenNumber = Int32.Parse(Console.ReadLine());
 
-                Console.WriteLine("Виберіть тип ресторану: \n(1) FastFood \n(2) CasualDining \n(3) CoffeeShop \n(4) IceCreamParlor \n(5) PizzaPlace");
-                int typeNumber = Int32.Parse(Console.ReadLine());
-                chosenType = (RestaurantType)typeNumber;
-            }
-            else
-            {
-                chosenName = (RestaurantName)chosenNumber;
-                switch (chosenName)
+                if (chosenNumber < 1 || chosenNumber > 10)
                 {
-                    case RestaurantName.McDonalds:
-                    case RestaurantName.KFC:
-                    case RestaurantName.BurgerKing:
-                        chosenType = RestaurantType.FastFood;
-                        break;
-                    case RestaurantName.Starbucks:
-                    case RestaurantName.Dunkin:
-                        chosenType = RestaurantType.CoffeeShop;
-                        break;
-                    case RestaurantName.BaskinRobbins:
-                        chosenType = RestaurantType.IceCreamParlor;
-                        break;
-                    case RestaurantName.PizzaHut:
-                    case RestaurantName.Dominos:
-                        chosenType = RestaurantType.PizzaPlace;
-                        break;
-                    default:
-                        chosenType = RestaurantType.CasualDining;
-                        break;
+                    Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
+                    continue;
+                }
+                RestaurantName chosenName;
+                RestaurantType chosenType;
+
+                if (chosenNumber == 10)
+                {
+                    Console.WriteLine("Введіть назву ресторану:");
+                    string customName = Console.ReadLine();
+                    chosenName = RestaurantName.Custom;
+
+                    Console.WriteLine("Виберіть тип ресторану: \n(1) FastFood \n(2) CasualDining \n(3) CoffeeShop \n(4) IceCreamParlor \n(5) PizzaPlace");
+                    int typeNumber = Int32.Parse(Console.ReadLine());
+                    chosenType = (RestaurantType)typeNumber;
+                }
+                else
+                {
+                    chosenName = (RestaurantName)chosenNumber;
+                    switch (chosenName)
+                    {
+                        case RestaurantName.McDonalds:
+                        case RestaurantName.KFC:
+                        case RestaurantName.BurgerKing:
+                            chosenType = RestaurantType.FastFood;
+                            break;
+                        case RestaurantName.Starbucks:
+                        case RestaurantName.Dunkin:
+                            chosenType = RestaurantType.CoffeeShop;
+                            break;
+                        case RestaurantName.BaskinRobbins:
+                            chosenType = RestaurantType.IceCreamParlor;
+                            break;
+                        case RestaurantName.PizzaHut:
+                        case RestaurantName.Dominos:
+                            chosenType = RestaurantType.PizzaPlace;
+                            break;
+                        default:
+                            chosenType = RestaurantType.CasualDining;
+                            break;
+                    }
+                }
+
+                Restaurant chosenRestaurant = new Restaurant(chosenName, chosenType, city);
+                chosenRestaurant.DisplayInfo();
+
+                Console.WriteLine("Вас все задовольняє? (так/ні)");
+                string satisfactionResponse = Console.ReadLine().ToLower();
+                if (satisfactionResponse == "так")
+                {
+                    return chosenRestaurant;
                 }
             }
-
-            return new Restaurant(chosenName, chosenType, city);
         }
+
         public Dish ChooseDish()
         {
             Console.WriteLine("Виберіть страву:");

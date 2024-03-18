@@ -45,13 +45,49 @@
                         order.DisplayOrderDetails();
                         Console.WriteLine("Натисніть будь-яку клавішу для виходу...");
                         Console.ReadKey();
-                        return;
-                    default:
-                        Console.WriteLine("Невідома опція. Будь ласка, введіть 1 для 'так' або 2 для 'ні'.");
-                        break;
-                }
-            }
+                        Console.Clear();
+                        Random rand = new Random();
+                        int courierCount = rand.Next(4, 8);
+                        List<Courier> couriers = new List<Courier>();
+                        for (int i = 0; i < courierCount; i++)
+                        {
+                            string courierName = Courier.courierNames[rand.Next(Courier.courierNames.Count)];
+                            (string type, int speed) courierTransport = Courier.transportTypes[rand.Next(Courier.transportTypes.Count)];
+                            double courierRating = rand.NextDouble() * 5;
+                            string operatorCode = Courier.operatorCodes[rand.Next(Courier.operatorCodes.Count)];
+                            string phoneNumber = "+38" + operatorCode + rand.Next(1000000, 9999999).ToString();
+                            var courier = new Courier(courierName, phoneNumber, courierRating, courierTransport);
+                            couriers.Add(courier);
+                        }
 
+                        while (true)
+                        {
+                            Console.WriteLine("Виберіть кур'єра:");
+                            for (int i = 0; i < couriers.Count; i++)
+                            {
+                                Console.WriteLine($"{i + 1}. {couriers[i].Name}, Транспорт: {couriers[i].Transport.type}");
+                            }
+
+                            string courierChoice = Console.ReadLine();
+
+                            switch (courierChoice)
+                            {
+                                case "1":
+                                case "2":
+                                case "3":
+                                    int index = int.Parse(courierChoice) - 1;
+                                    couriers[index].ShowCourierDetails();
+                                    Console.WriteLine("Натисніть будь-яку клавішу для виходу...");
+                                    Console.ReadKey();
+                                    return;
+                                default:
+                                    Console.WriteLine("Невідома опція. Будь ласка, введіть номер кур'єра.");
+                                    break;
+                            }
+                        }
+                }
+
+            }
         }
     }
 }
