@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace LabaNomer3
 {
+    public enum OrderStatus
+    {
+        Created,
+        InProgress,
+        Completed,
+        Delivered,
+        NotDelivered
+    }
     public class Order
     {
+        public OrderStatus Status { get; set; }
         public List<Dish> Dishes { get; set; }
         public double TotalAmount { get; set; }
-        public string Status { get; set; }
         public Restaurant Restaurant { get; set; }
         public Courier Courier { get; set; }
         public Client Client { get; set; }
@@ -19,15 +27,9 @@ namespace LabaNomer3
         {
             Dishes = dishes;
             TotalAmount = CalculateTotalAmount();
-            Status = "Виконано";
+            Status = OrderStatus.InProgress;
             Restaurant = restaurant;
             Client = client;
-        }
-
-        public void AddDish(Dish dish)
-        {
-            Dishes.Add(dish);
-            TotalAmount += dish.Price;
         }
 
         public void DisplayTotalCaloriesAndPrice()
@@ -46,33 +48,8 @@ namespace LabaNomer3
             }
             return total;
         }
-        public static Order CreateOrder(Client client, Restaurant chosenRestaurant)
-        {
-            Order order = new Order(new List<Dish>(), chosenRestaurant, client);
 
-            while (true)
-            {
-                var chosenDish = chosenRestaurant.ChooseDish();
-                order.AddDish(chosenDish);
-
-                Console.WriteLine("Вибрати ще одну страву? (1 - так, 2 - ні)");
-                string answer = Console.ReadLine();
-
-                switch (answer)
-                {
-                    case "1":
-                        break;
-                    case "2":
-                        order.DisplayOrderDetails();
-                        return order;
-                    default:
-                        Console.WriteLine("Невідома опція. Будь ласка, спробуйте ще раз.");
-                        break;
-                }
-            }
-        }
-
-            public void UpdateStatus(string status)
+            public void UpdateStatus(OrderStatus status)
         {
             Status = status;
         }

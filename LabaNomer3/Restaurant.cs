@@ -93,111 +93,11 @@ namespace LabaNomer3
             int houseNumber = random.Next(1, 151);
             return address + ", " + houseNumber.ToString();
         }
-        public void DisplayMenu()
-        {
-            Console.WriteLine("Меню:");
-            foreach (var dish in Menu)
-            {
-                Console.WriteLine($"Назва: {dish.Name}, Опис: {dish.Description}, Ціна: {dish.Price}, Калорії: {dish.Calories}");
-            }
-        }
         public void DisplayInfo()
         {
             Console.WriteLine($"Назва: {Name}, Тип: {Type}, Місто: {City}, Адреса: {Address}, Рейтинг: {Rating}");
         }
-
-        public static Restaurant ChooseRestaurant()
-        {
-            while (true)
-            {
-                Console.Write("Введіть місто: ");
-                string city = Console.ReadLine();
-
-                Console.WriteLine("Виберіть ресторан: \n(1) McDonalds \n(2) KFC \n(3) BurgerKing \n(4) Subway \n(5) Starbucks \n(6) PizzaHut \n(7) Dominos \n(8) Dunkin \n(9) BaskinRobbins \n(10) Custom"); ;
-                int chosenNumber = Int32.Parse(Console.ReadLine());
-
-                if (chosenNumber < 1 || chosenNumber > 10)
-                {
-                    Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
-                    continue;
-                }
-                RestaurantName chosenName;
-                RestaurantType chosenType;
-
-                if (chosenNumber == 10)
-                {
-                    Console.WriteLine("Введіть назву ресторану:");
-                    string customName = Console.ReadLine();
-                    chosenName = RestaurantName.Custom;
-
-                    Console.WriteLine("Виберіть тип ресторану: \n(1) FastFood \n(2) CasualDining \n(3) CoffeeShop \n(4) IceCreamParlor \n(5) PizzaPlace");
-                    int typeNumber = Int32.Parse(Console.ReadLine());
-                    chosenType = (RestaurantType)typeNumber;
-                }
-                else
-                {
-                    chosenName = (RestaurantName)chosenNumber;
-                    switch (chosenName)
-                    {
-                        case RestaurantName.McDonalds:
-                        case RestaurantName.KFC:
-                        case RestaurantName.BurgerKing:
-                            chosenType = RestaurantType.FastFood;
-                            break;
-                        case RestaurantName.Starbucks:
-                        case RestaurantName.Dunkin:
-                            chosenType = RestaurantType.CoffeeShop;
-                            break;
-                        case RestaurantName.BaskinRobbins:
-                            chosenType = RestaurantType.IceCreamParlor;
-                            break;
-                        case RestaurantName.PizzaHut:
-                        case RestaurantName.Dominos:
-                            chosenType = RestaurantType.PizzaPlace;
-                            break;
-                        default:
-                            chosenType = RestaurantType.CasualDining;
-                            break;
-                    }
-                }
-
-                Restaurant chosenRestaurant = new Restaurant(chosenName, chosenType, city);
-                chosenRestaurant.DisplayInfo();
-
-                Console.WriteLine("Вас все задовольняє? (1) так (2) ні");
-                int satisfactionResponse = Int32.Parse(Console.ReadLine());
-                switch (satisfactionResponse)
-                {
-                    case 1:
-                        return chosenRestaurant;
-                    case 2:
-                        Console.WriteLine("Давайте спробуємо знову.");
-                        break;
-                    default:
-                        Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
-                        break;
-                }
-            }
-        }
-
-        public Dish ChooseDish()
-        {
-            Console.WriteLine("Виберіть страву:");
-            for (int i = 0; i < Menu.Count; i++)
-            {
-                Console.WriteLine($"{i + 1}. {Menu[i].Name}");
-            }
-
-            int chosenNumber = Int32.Parse(Console.ReadLine());
-
-            if (chosenNumber < 1 || chosenNumber > Menu.Count)
-            {
-                Console.WriteLine("Неправильний вибір. Спробуйте ще раз.");
-                return ChooseDish();
-            }
-
-            return Menu[chosenNumber - 1];
-        }
+        
 
     }
 }
