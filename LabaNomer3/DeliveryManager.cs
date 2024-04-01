@@ -6,12 +6,13 @@ public class DeliveryManager
 {
     public List<Courier> AvailableCouriers { get; set; }
     public List<Dish> Menu { get; set; }
+    public string DeliveryAddress { get; set; }
 
     public DeliveryManager()
     {
         AvailableCouriers = GenerateCouriers();
     }
-    public static Restaurant ChooseRestaurant()
+    public virtual Restaurant ChooseRestaurant()
     {
         while (true)
         {
@@ -84,7 +85,7 @@ public class DeliveryManager
             }
         }
     }
-    public Dish ChooseDish()
+    public virtual Dish ChooseDish()
     {
         Console.WriteLine("Виберіть страву:");
         for (int i = 0; i < Menu.Count; i++)
@@ -102,6 +103,50 @@ public class DeliveryManager
 
         return Menu[chosenNumber - 1];
     }
+
+    public virtual Order CreateOrder(Client client, Restaurant chosenRestaurant, DeliveryManager manager)
+    {
+        Order order = new Order(new List<Dish>(), chosenRestaurant, client);
+        while (true)
+        {
+            order = InputOrderDetails(manager, order);
+            string answer = Console.ReadLine();
+
+            switch (answer)
+            {
+                case "1":
+                    break;
+                case "2":
+                    OutputOrderDetails(order);
+                    return order;
+                default:
+                    Console.WriteLine("Невідома опція. Будь ласка, спробуйте ще раз.");
+                    break;
+            }
+        }
+    }
+
+    public static Order InputOrderDetails(DeliveryManager manager, Order order)
+    {
+        var chosenDish = manager.ChooseDish();
+        manager.AddDishToOrder(order, chosenDish);
+        Console.WriteLine("Вибрати ще одну страву? (1 - так, 2 - ні)");
+        return order;
+    }
+
+    public static void OutputOrderDetails(Order order)
+    {
+        order.UpdateStatus(OrderStatus.Created);
+        order.DisplayOrderDetails();
+        System.Threading.Thread.Sleep(2000);
+        Console.Clear();
+        order.UpdateStatus(OrderStatus.InProgress);
+        order.DisplayOrderDetails();
+        System.Threading.Thread.Sleep(5000);
+        Console.Clear();
+        order.UpdateStatus(OrderStatus.Completed);
+        order.DisplayOrderDetails();
+    }
     public void AddDishToOrder(Order order, Dish dish)
     {
         order.Dishes.Add(dish);
@@ -116,7 +161,7 @@ public class DeliveryManager
     {
         return distance * costPerKm;
     }
-    private List<Courier> GenerateCouriers()
+    protected List<Courier> GenerateCouriers()
     {
         Random rand = new Random();
         int courierCount = rand.Next(4, 8);
@@ -133,45 +178,11 @@ public class DeliveryManager
         }
         return couriers;
     }
-    public static Order CreateOrder(Client client, Restaurant chosenRestaurant, DeliveryManager manager)
-    {
-        Order order = new Order(new List<Dish>(), chosenRestaurant, client);
-        while (true)
-        {
-            var chosenDish = manager.ChooseDish();
-            manager.AddDishToOrder(order, chosenDish);
-
-            Console.WriteLine("Вибрати ще одну страву? (1 - так, 2 - ні)");
-            string answer = Console.ReadLine();
-
-            switch (answer)
-            {
-                case "1":
-                    break;
-                case "2":
-                    order.UpdateStatus(OrderStatus.Created);
-                    order.DisplayOrderDetails();
-                    System.Threading.Thread.Sleep(2000);
-                    Console.Clear();
-                    order.UpdateStatus(OrderStatus.InProgress);
-                    order.DisplayOrderDetails();
-                    System.Threading.Thread.Sleep(5000);
-                    Console.Clear();
-                    order.UpdateStatus(OrderStatus.Completed);
-                    order.DisplayOrderDetails();
-                    return order;
-                default:
-                    Console.WriteLine("Невідома опція. Будь ласка, спробуйте ще раз.");
-                    break;
-            }
-        }
-    }
-
     public void TrackOrder(Order order)
     {
         Console.WriteLine($"Order status: {order.Status}");
     }
-    public Courier SelectCourier(Client client, Order order)
+    public virtual Courier SelectCourier(Client client, Order order)
     {
         Courier courier = null;
         while (true)
@@ -203,7 +214,7 @@ public class DeliveryManager
         return courier;
     }
 
-    public void EndInfo(Client client, Order order, Courier courier)
+    public virtual void EndInfo(Client client, Order order, Courier courier)
     {
         Random rand = new Random();
         double distance = rand.Next(3, 21);

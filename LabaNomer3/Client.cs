@@ -8,6 +8,12 @@ public class Client
 
     public Client()
     {
+        OrderHistory = new List<Order>();
+        GetClientInformation();
+    }
+
+    protected virtual void GetClientInformation()
+    {
         List<string> Kyivstar = new List<string> { "67", "68", "96", "97", "98" };
         List<string> Vodafone = new List<string> { "50", "66", "95", "99" };
         List<string> Lifecell = new List<string> { "63", "93", "73" };
@@ -16,41 +22,10 @@ public class Client
         {
             try
             {
-                while (true)
-                {
-                    Console.Write("Будь ласка, введіть ваше ім'я: ");
-                    string name = Console.ReadLine();
-                    if (!name.All(Char.IsLetter))
-                    {
-                        throw new Exception("Ім'я повинно містити лише букви.");
-                    }
-                    Name = name;
-                    Console.WriteLine("Ви ввели ім'я: {0}", Name);
-                    break;
-                }
-
-                while (true)
-                {
-                    Console.Write("Будь ласка, введіть вашу адресу доставки: ");
-                    DeliveryAddress = Console.ReadLine();
-                    Console.WriteLine("Ви ввели адресу доставки: {0}", DeliveryAddress);
-                    break;
-                }
-
-                while (true)
-                {
-                    Console.Write("Будь ласка, введіть ваш контактний номер(введіть рівно 9 чисел): +380");
-                    string number = Console.ReadLine();
-                    if (number.Length != 9 || !(Kyivstar.Contains(number.Substring(0, 2)) || Vodafone.Contains(number.Substring(0, 2)) || Lifecell.Contains(number.Substring(0, 2))))
-                    {
-                        throw new Exception("Номер телефону повинен містити рівно 9 цифр і починатися з відповідних двох цифр оператора.");
-                    }
-                    ContactNumber = "+380" + number;
-                    Console.WriteLine("Ви ввели номер телефону: {0}", ContactNumber);
-                    break;
-                }
-
-                OrderHistory = new List<Order>();
+                Name = GetInput("Будь ласка, введіть ваше ім'я: ", "Ім'я повинно містити лише букви.", input => input.All(Char.IsLetter));
+                DeliveryAddress = GetInput("Будь ласка, введіть вашу адресу доставки: ");
+                ContactNumber = GetInput("Будь ласка, введіть ваш контактний номер(введіть рівно 9 чисел): +380", "Номер телефону повинен містити рівно 9 цифр і починатися з відповідних двох цифр оператора.", number => number.Length == 9 && (Kyivstar.Contains(number.Substring(0, 2)) || Vodafone.Contains(number.Substring(0, 2)) || Lifecell.Contains(number.Substring(0, 2))));
+                ContactNumber = "+380" + ContactNumber;
 
                 Console.WriteLine("Все вірно? (1) так (2) ні (3) змінити деякі пункти");
                 string answer = Console.ReadLine();
@@ -67,41 +42,14 @@ public class Client
                         switch (changeOption)
                         {
                             case "1":
-                                while (true)
-                                {
-                                    Console.Write("Будь ласка, введіть ваше ім'я: ");
-                                    string name = Console.ReadLine();
-                                    if (!name.All(Char.IsLetter))
-                                    {
-                                        throw new Exception("Ім'я повинно містити лише букви.");
-                                    }
-                                    Name = name;
-                                    Console.WriteLine("Ви ввели ім'я: {0}", Name);
-                                    return;
-                                }
+                                Name = GetInput("Будь ласка, введіть ваше ім'я: ", "Ім'я повинно містити лише букви.", input => input.All(Char.IsLetter));
                                 break;
                             case "2":
-                                while (true)
-                                {
-                                    Console.Write("Будь ласка, введіть вашу адресу доставки: ");
-                                    DeliveryAddress = Console.ReadLine();
-                                    Console.WriteLine("Ви ввели адресу доставки: {0}", DeliveryAddress);
-                                    break;
-                                }
-                                return;
+                                DeliveryAddress = GetInput("Будь ласка, введіть вашу адресу доставки: ");
+                                break;
                             case "3":
-                                while (true)
-                                {
-                                    Console.Write("Будь ласка, введіть ваш контактний номер(введіть рівно 9 чисел): +380");
-                                    string number = Console.ReadLine();
-                                    if (number.Length != 9 || !(Kyivstar.Contains(number.Substring(0, 2)) || Vodafone.Contains(number.Substring(0, 2)) || Lifecell.Contains(number.Substring(0, 2))))
-                                    {
-                                        throw new Exception("Номер телефону повинен містити рівно 9 цифр і починатися з відповідних двох цифр оператора.");
-                                    }
-                                    ContactNumber = "+380" + number;
-                                    Console.WriteLine("Ви ввели номер телефону: {0}", ContactNumber);
-                                    return;
-                                }
+                                ContactNumber = GetInput("Будь ласка, введіть ваш контактний номер(введіть рівно 9 чисел): +380", "Номер телефону повинен містити рівно 9 цифр і починатися з відповідних двох цифр оператора.", number => number.Length == 9 && (Kyivstar.Contains(number.Substring(0, 2)) || Vodafone.Contains(number.Substring(0, 2)) || Lifecell.Contains(number.Substring(0, 2))));
+                                ContactNumber = "+380" + ContactNumber;
                                 break;
                             default:
                                 Console.WriteLine("Невідома опція. Будь ласка, спробуйте ще раз.");
@@ -119,7 +67,26 @@ public class Client
             }
         }
     }
-    public void LeaveReview()
+
+    private string GetInput(string prompt, string errorMessage = "", Func<string, bool> validate = null)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            string input = Console.ReadLine();
+            if (validate == null || validate(input))
+            {
+                Console.WriteLine("Ви ввели: {0}", input);
+                return input;
+            }
+            else
+            {
+                Console.WriteLine(errorMessage);
+            }
+        }
+    }
+
+    public virtual void LeaveReview()
     {
         Console.Write("Будь ласка, введіть ваш відгук: ");
         string reviewText = Console.ReadLine();
@@ -130,4 +97,3 @@ public class Client
         review.SaveReview();
     }
 }
-
